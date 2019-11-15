@@ -11,7 +11,7 @@
             Z = z;
         }
 
-        public Vertex Mult(Matrix matrix)
+        public Vertex Multiply(Matrix matrix)
         {
             double x = X * matrix[0, 0] +
                        Y * matrix[0, 1] +
@@ -38,7 +38,7 @@
 
         public static Vertex operator *(Vertex vx, Matrix matrix)
         {
-            return vx.Mult(matrix);
+            return vx.Multiply(matrix);
         }
     }
 }

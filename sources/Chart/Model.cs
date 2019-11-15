@@ -9,7 +9,7 @@ namespace Chart
 {
     public sealed class Model
     {
-        private Vertex[][] _graphs;
+        private readonly Vertex[][] _graphs;
         public Vertex Size { get; private set; }
 
         public Model(IEnumerable<string> files)
@@ -43,12 +43,14 @@ namespace Chart
                 .ToArray();
 
             foreach (Vertex[] graph in _graphs)
+            {
                 for (int i = 0; i < graph.Length; ++i)
                 {
                     graph[i].X -= minX;
                     graph[i].Y -= minY;
                     graph[i].Z -= minZ;
                 }
+            }
 
             Size = new Vertex(maxX - minX, maxY - minY, maxZ - minZ);
         }
@@ -73,12 +75,17 @@ namespace Chart
                 ++idx;
                 Color color = Utils.HslToRgb(idx * colorStep / 360.0, 1.0, 0.5);
                 using (var pen = new Pen(color))
+                {
                     vb.DrawLineStrip(gfx, pen);
+                }
 
                 // Draw label
 
                 using (var pen = new Pen(color, 5))
+                {
                     gfx.DrawLine(pen, 10, idx * 20, 30, idx * 20);
+                }
+
                 gfx.DrawString("Series " + idx, SystemFonts.DefaultFont, Brushes.Black, 35, idx * 20 - SystemFonts.DefaultFont.Height / 2);
             }
 
@@ -144,22 +151,24 @@ namespace Chart
             // Draw grid
             const int count = 5;
             using (var gridFont = new Font(SystemFonts.DefaultFont.FontFamily, 10f))
-                for (int i = 0; i < count; ++i)
             {
-                var vertex = new Vertex(i * Size.X / count, 0, 0);
-                vertex *= matrix;
-                gfx.FillRectangle(Brushes.Black, (float)vertex.X - 1f, (float)vertex.Y - 1f, 3f, 3f);
-                gfx.DrawString((i * Size.X / count).ToString(), gridFont, Brushes.DarkBlue, (float)vertex.X, (float)vertex.Y);
+                for (int i = 0; i < count; ++i)
+                {
+                    var vertex = new Vertex(i * Size.X / count, 0, 0);
+                    vertex *= matrix;
+                    gfx.FillRectangle(Brushes.Black, (float)vertex.X - 1f, (float)vertex.Y - 1f, 3f, 3f);
+                    gfx.DrawString((i * Size.X / count).ToString(CultureInfo.InvariantCulture), gridFont, Brushes.DarkBlue, (float)vertex.X, (float)vertex.Y);
 
-                vertex = new Vertex(0, i * Size.Y / count, 0);
-                vertex *= matrix;
-                gfx.FillRectangle(Brushes.Black, (float)vertex.X - 1f, (float)vertex.Y - 1f, 3f, 3f);
-                gfx.DrawString((i * Size.Y / count).ToString(), gridFont, Brushes.DarkBlue, (float)vertex.X, (float)vertex.Y);
+                    vertex = new Vertex(0, i * Size.Y / count, 0);
+                    vertex *= matrix;
+                    gfx.FillRectangle(Brushes.Black, (float)vertex.X - 1f, (float)vertex.Y - 1f, 3f, 3f);
+                    gfx.DrawString((i * Size.Y / count).ToString(CultureInfo.InvariantCulture), gridFont, Brushes.DarkBlue, (float)vertex.X, (float)vertex.Y);
 
-                vertex = new Vertex(0, 0, i * Size.Z / count);
-                vertex *= matrix;
-                gfx.FillRectangle(Brushes.Black, (float)vertex.X - 1f, (float)vertex.Y - 1f, 3f, 3f);
-                gfx.DrawString((i * Size.Z / count).ToString(), gridFont, Brushes.DarkBlue, (float)vertex.X, (float)vertex.Y);
+                    vertex = new Vertex(0, 0, i * Size.Z / count);
+                    vertex *= matrix;
+                    gfx.FillRectangle(Brushes.Black, (float)vertex.X - 1f, (float)vertex.Y - 1f, 3f, 3f);
+                    gfx.DrawString((i * Size.Z / count).ToString(CultureInfo.InvariantCulture), gridFont, Brushes.DarkBlue, (float)vertex.X, (float)vertex.Y);
+                }
             }
         }
     }

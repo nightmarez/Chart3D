@@ -19,7 +19,7 @@ namespace Chart
             return vb;
         }
 
-        public void Mult(Matrix matrix)
+        public void Multiply(Matrix matrix)
         {
             var result = new List<Vertex>(_arr.Count);
             result.AddRange(_arr.Select(vx => vx * matrix));
@@ -29,14 +29,16 @@ namespace Chart
 
         public static VertexBuffer operator *(VertexBuffer vb, Matrix matrix)
         {
-            vb.Mult(matrix);
+            vb.Multiply(matrix);
             return vb;
         }
 
         public void DrawLineStrip(Graphics gfx, Pen pen)
         {
             for (int i = 0; i < _arr.Count - 1; ++i)
+            {
                 gfx.DrawLine(pen, (float)_arr[i].X, (float)_arr[i].Y, (float)_arr[i + 1].X, (float)_arr[i + 1].Y);
+            }
         }
 
         public void DrawLines(Graphics gfx, Pen pen)

@@ -19,10 +19,7 @@ namespace Chart
 
         private Core() { }
 
-        public static Core Instance
-        {
-            get { return _core ?? (_core = new Core()); }
-        }
+        public static Core Instance => _core ?? (_core = new Core());
 
         public void Run()
         {
@@ -43,7 +40,9 @@ namespace Chart
         public static void Main()
         {
             using (Core core = Instance)
+            {
                 core.Run();
+            }
         }
 
         public void Draw()
@@ -58,7 +57,9 @@ namespace Chart
                 }
 
                 using (var gfx = Window.CreateGraphics())
+                {
                     gfx.DrawImageUnscaled(bmp, 0, 0);
+                }
             }
         }
 
@@ -124,17 +125,19 @@ namespace Chart
                 for (int i = 1;; ++i)
                 {
                     string fileName = Path.Combine(Application.StartupPath, i + ".txt");
+
                     if (File.Exists(fileName))
+                    {
                         yield return fileName;
+                    }
                     else
+                    {
                         yield break;
+                    }
                 }
             }
         }
 
-        public Model Model
-        {
-            get { return _model ?? (_model = new Model(ModelFiles)); }
-        }
+        public Model Model => _model ?? (_model = new Model(ModelFiles));
     }
 }

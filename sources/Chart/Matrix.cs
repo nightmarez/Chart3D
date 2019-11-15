@@ -9,8 +9,8 @@ namespace Chart
 
         public double this[int i, int j]
         {
-            get { return _arr[j, i]; }
-            set { _arr[j, i] = value; }
+            get => _arr[j, i];
+            set => _arr[j, i] = value;
         }
 
         public static Matrix CreateIdentity()
@@ -18,26 +18,34 @@ namespace Chart
             var matrix = new Matrix();
 
             for (int i = 0; i < Size; ++i)
+            {
                 matrix[i, i] = 1.0;
+            }
 
             return matrix;
         }
 
-        public Matrix Mult(Matrix matrix)
+        public Matrix Multiply(Matrix matrix)
         {
             var result = new Matrix();
 
             for (int j = 0; j < Size; ++j)
+            {
                 for (int i = 0; i < Size; ++i)
+                {
                     for (int k = 0; k < Size; ++k)
+                    {
                         result[i, j] += this[k, j] * matrix[i, k];
+                    }
+                }
+            }
 
             return result;
         }
 
         public static Matrix operator *(Matrix matrix0, Matrix matrix1)
         {
-            return matrix0.Mult(matrix1);
+            return matrix0.Multiply(matrix1);
         }
 
         public static Matrix CreateTranslate(double x, double y, double z)
